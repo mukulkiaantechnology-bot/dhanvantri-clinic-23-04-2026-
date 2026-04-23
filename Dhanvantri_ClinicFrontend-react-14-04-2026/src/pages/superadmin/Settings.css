@@ -1,0 +1,238 @@
+.settings-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2rem;
+}
+
+.settings-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.settings-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.card-header svg {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.settings-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-item:last-child {
+    border-bottom: none;
+}
+
+.item-label {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.item-value {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.status-enabled {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    background: #E1F9F0;
+    color: #10B981;
+    border-radius: 50px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.status-disabled {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    background: #FEF2F2;
+    color: #DC2626;
+    border-radius: 50px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.text-success {
+    color: #10B981;
+    font-weight: 600;
+}
+
+.text-warning {
+    color: #F59E0B;
+    font-weight: 600;
+}
+
+.card-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-sm {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Tabs styling */
+.settings-tabs {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 2px solid #E2E8F0;
+    margin-bottom: 2rem;
+}
+
+.settings-tab {
+    padding: 1rem 0;
+    font-weight: 600;
+    color: #64748B;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    background: none;
+    font-size: 1rem;
+}
+
+.settings-tab.active {
+    color: #2D3BAE;
+}
+
+.settings-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #2D3BAE;
+}
+
+.settings-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    width: 20px;
+    height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .settings-card {
+        padding: 1.5rem;
+    }
+
+    .settings-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .item-value {
+        align-self: flex-end;
+    }
+}
+
+/* Stability for buttons */
+.btn-no-hover,
+.btn-no-hover:hover,
+.btn-no-hover:active,
+.btn-no-hover:focus {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    transition: none !important;
+    transform: none !important;
+    background: var(--primary-gradient) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--white) !important;
+}
+
+.btn-no-hover::before,
+.btn-no-hover::after {
+    display: none !important;
+}

@@ -1,0 +1,163 @@
+.audit-logs-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #FFFFFF;
+    border-radius: 16px;
+    border: 1px solid #F1F5F9;
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box svg {
+    position: absolute;
+    left: 1rem;
+    color: #94A3B8;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    border-radius: 12px;
+    border: 1.5px solid #F1F5F9;
+    background: #F8FAFC;
+    font-size: 0.9375rem;
+    transition: all 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #3F46B8;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 4px rgba(63, 70, 184, 0.1);
+}
+
+.filter-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #64748B;
+    font-weight: 600;
+}
+
+.filter-box select {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    border: 1.5px solid #F1F5F9;
+    background: #F8FAFC;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+.action-badge {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: #EEF2FF;
+    color: #3F46B8;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.details-cell {
+    max-width: 400px;
+}
+
+.detail-item {
+    display: inline-block;
+    font-size: 0.75rem;
+    background: #F8FAFC;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #F1F5F9;
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.detail-item strong {
+    color: #64748B;
+}
+
+code {
+    background: #F1F5F9;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.8125rem;
+    color: #475569;
+}
+
+.data-table thead th {
+    background: #F8FAFC;
+    color: #64748B;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 1.25rem;
+}
+
+.data-table tbody td {
+    padding: 1.25rem;
+    border-bottom: 1px solid #F1F5F9;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+    background: #FAFBFF;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 900px) {
+    .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Stability for buttons */
+.btn-no-hover,
+.btn-no-hover:hover,
+.btn-no-hover:active,
+.btn-no-hover:focus {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    transition: none !important;
+    transform: none !important;
+    background: var(--primary-gradient) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--white) !important;
+}
+
+.btn-no-hover::before,
+.btn-no-hover::after {
+    display: none !important;
+}

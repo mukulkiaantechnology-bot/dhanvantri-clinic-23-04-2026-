@@ -1,0 +1,888 @@
+/* Assessments Page - FINAL RESTORED UI */
+.no-templates-message {
+    padding: 2rem;
+    text-align: center;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    color: #64748b;
+}
+
+.templates-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.template-select-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    width: 100%;
+}
+
+.template-select-card:hover:not(:disabled) {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.template-select-card:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #f8fafc;
+}
+
+.template-icon {
+    width: 48px;
+    height: 48px;
+    background: #eff6ff;
+    color: var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.template-info {
+    flex: 1;
+}
+
+.template-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9375rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.template-info p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.template-select-card .arrow {
+    color: #cbd5e1;
+}
+
+.template-select-card:hover .arrow {
+    color: var(--primary-color);
+}
+
+.assessments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.assessments-header .btn-primary {
+    background: linear-gradient(135deg, #2D3BAE 0%, #1E1B4B 100%) !important;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(45, 59, 174, 0.2);
+    transition: all 0.3s ease;
+    opacity: 1 !important;
+    border: none;
+}
+
+.assessments-header .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 59, 174, 0.3);
+    filter: brightness(1.1);
+}
+
+.assessments-header .btn-primary svg {
+    font-size: 1.2rem;
+}
+
+.btn-with-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.6rem !important;
+    font-size: 0.95rem !important;
+}
+
+.assessments-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.assessments-subtitle {
+    font-size: 0.9375rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Search and Stats Card */
+.assessments-search-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-stats-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.search-box-left {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-icon-small {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+.search-input-minimal {
+    width: 100%;
+    padding: 0.75rem 0.75rem 0.75rem 2.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    color: #1e293b;
+    transition: all 0.2s;
+    background: #f8fafc;
+}
+
+.search-input-minimal::placeholder {
+    color: #94a3b8;
+}
+
+.search-input-minimal:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(35, 40, 107, 0.05);
+}
+
+/* Inline Stats */
+.stats-inline {
+    display: flex;
+    gap: 3rem;
+}
+
+.stat-inline-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 0 0.25rem 0;
+}
+
+.stat-text {
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Assessments Grid */
+.assessments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.assessments-loading-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: #64748b;
+    font-size: 0.9375rem;
+}
+
+.empty-state-assessments {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border: 1px dashed #e2e8f0;
+    border-radius: 12px;
+}
+
+.empty-state-assessments h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.5rem 0;
+}
+
+.empty-state-assessments p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Assessment Card */
+.assessment-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.assessment-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.assessment-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.assessment-patient-info {
+    flex: 1;
+}
+
+.assessment-patient-name {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 0.25rem 0;
+}
+
+.assessment-date {
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Preview Content */
+.assessment-preview-content {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+}
+
+.preview-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+}
+
+.preview-item:last-child {
+    margin-bottom: 0;
+}
+
+.preview-label {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.preview-val {
+    color: #1e293b;
+    font-weight: 500;
+    text-align: right;
+    max-width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-badge.completed {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.draft {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.pending {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Assessment Actions */
+.assessment-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.action-btn-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: white;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-btn-icon:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: #f8faff;
+}
+
+/* Report View Display */
+.assessment-display-container {
+    padding: 0.5rem;
+}
+
+.report-branded-header {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #1e1b4b;
+    margin-bottom: 1.5rem;
+}
+
+.report-branded-header.show-on-screen {
+    display: flex;
+}
+
+.clinic-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-logo-small {
+    width: 40px;
+    height: 40px;
+    background: #1e1b4b;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 800;
+}
+
+.patient-banner-brief {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 1.5rem;
+}
+
+.status-pill-minimal {
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-pill-minimal.completed {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.observations-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.obs-item {
+    margin-bottom: 1rem;
+}
+
+.obs-item label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.obs-value {
+    font-size: 0.9375rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.medical-orders-box {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.section-title-minimal {
+    font-size: 0.8125rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.orders-refined-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.order-entry {
+    background: #f8fafc;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.order-type {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.order-details-text {
+    font-size: 0.9375rem;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.report-signatures {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+}
+
+.sig-block {
+    text-align: center;
+}
+
+.sig-line {
+    border-top: 1px solid #000;
+    margin-bottom: 0.5rem;
+}
+
+.modal-actions-floating-bottom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* --- NEWLY ADDED STYLES FOR ORDERS SECTION --- */
+
+.section-title-clinical {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    /* Slightly reduced gap */
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.02em;
+}
+
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    /* Tighter gap for list look */
+    margin-bottom: 1.5rem;
+}
+
+/* Single Row Layout - Clean & Striped */
+.order-row-single {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    position: relative;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+}
+
+.order-row-single:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+/* Column Widths */
+.order-col-type {
+    flex: 0 0 15%;
+    /* 15% width fixed */
+    min-width: 80px;
+}
+
+.order-col-item {
+    flex: 0 0 35%;
+    /* 35% width fixed */
+    min-width: 150px;
+}
+
+.order-col-instr {
+    flex: 1 1 100%;
+    margin-top: 0.25rem;
+}
+
+.order-col-instr textarea.compact-input {
+    height: auto !important;
+    min-height: 80px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    resize: vertical;
+}
+
+/* Compact Inputs */
+.compact-select,
+.compact-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    /* Standard grey border */
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: #1e293b;
+    background-color: #fff;
+    height: 38px;
+    /* Fixed height alignment */
+}
+
+.compact-select:focus,
+.compact-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* Delete Button - Aligned & Subtle */
+.btn-icon-deleter {
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.btn-icon-deleter:hover {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+/* Add Button Reformatted */
+.btn-add-order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #2D3BAE;
+    border: 1px dashed #2D3BAE;
+    /* Lighter dashed border */
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.btn-add-order:hover {
+    background: #f0f9ff;
+    border-color: #1E1B4B;
+    color: #1E1B4B;
+}
+
+.p-sm {
+    padding: 1rem;
+}
+
+.mb-sm {
+    margin-bottom: 0.75rem;
+}
+
+/* Dynamic Form Styling */
+.dynamic-assessment-form {
+    padding: 0 0.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.dynamic-fields-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* UNIVERSAL PRINT FIX - PROFESSIONAL A4 */
+@media print {
+    @page {
+        size: A4;
+        margin: 20mm;
+    }
+
+    body {
+        visibility: hidden;
+        background: white !important;
+        color: #000 !important;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    /* Everything is hidden by default */
+    * {
+        visibility: hidden;
+    }
+
+    /* Only show the report container and its children */
+    .assessment-display-container,
+    .assessment-display-container * {
+        visibility: visible;
+    }
+
+    .assessment-display-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0 !important;
+        background: white !important;
+    }
+
+    /* Header Styling for Print */
+    .report-branded-header {
+        display: flex !important;
+        border-bottom: 2px solid #000 !important;
+        margin-bottom: 2rem !important;
+        padding-bottom: 1rem !important;
+        align-items: flex-end;
+    }
+
+    .report-branded-header h2 {
+        font-size: 24pt !important;
+        color: #000 !important;
+        margin: 0;
+    }
+
+    .report-branded-header p {
+        font-size: 10pt !important;
+        color: #333 !important;
+    }
+
+    /* Patient Banner for Print */
+    .patient-banner-brief {
+        border: 1px solid #000 !important;
+        background: transparent !important;
+        padding: 1rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .patient-meta-core h1 {
+        font-size: 18pt !important;
+        color: #000 !important;
+    }
+
+    /* Content Styling */
+    .section-title-minimal {
+        font-size: 12pt !important;
+        border-bottom: 1px solid #000 !important;
+        color: #000 !important;
+        margin-top: 1.5rem !important;
+    }
+
+    .obs-item {
+        break-inside: avoid;
+    }
+
+    .obs-item label {
+        color: #444 !important;
+        font-size: 9pt !important;
+        text-transform: uppercase;
+    }
+
+    .obs-value {
+        font-size: 11pt !important;
+        color: #000 !important;
+        font-weight: normal;
+    }
+
+    /* Orders Box */
+    .medical-orders-box {
+        border: 1px solid #000 !important;
+        background: transparent !important;
+        padding: 1rem !important;
+        break-inside: avoid;
+    }
+
+    .order-entry {
+        border: none !important;
+        border-left: 2px solid #000 !important;
+        background: transparent !important;
+        padding-left: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Hide Elements */
+    .modal-actions-floating-bottom,
+    .close-btn,
+    .status-pill-minimal {
+        display: none !important;
+    }
+
+    /* Signatures */
+    .report-signatures {
+        margin-top: 5cm !important;
+    }
+}
+
+/* Stability for buttons */
+.btn-no-hover,
+.btn-no-hover:hover,
+.btn-no-hover:active,
+.btn-no-hover:focus {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    transition: none !important;
+    transform: none !important;
+    background: var(--primary-gradient) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--white) !important;
+}
+
+.btn-no-hover::before,
+.btn-no-hover::after {
+    display: none !important;
+}
+
+/* Validation Error States */
+input.error,
+textarea.error,
+select.error {
+    border-color: #EF4444 !important;
+    background-color: #FEF2F2;
+}
+
+input.error:focus,
+textarea.error:focus,
+select.error:focus {
+    border-color: #DC2626 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.error-message {
+    color: #EF4444;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-md {
+    margin-top: 1rem;
+}
+
+.mt-lg {
+    margin-top: 1.5rem;
+}
+
+.mt-xl {
+    margin-top: 2rem;
+}
+
+.mb-lg {
+    margin-bottom: 1.5rem;
+}
+
+.mt-sm {
+    margin-top: 0.5rem;
+}

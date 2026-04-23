@@ -1,0 +1,50 @@
+﻿
+> exclusive-vision-temp@0.0.0 build
+> tsc -b && vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 214 modules transformed.
+node.exe : [31mΓ£ù[39m 
+Build failed in 4.74s
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
+    + CategoryInfo          
+    : NotSpecified: ([31m  
+  Γ£ù[39m Build failed i   
+ n 4.74s:String) [], Rem    
+oteException
+    + FullyQualifiedErrorId 
+    : NativeCommandError
+ 
+[31merror during build:
+[31mCould not resolve 
+entry module 
+"framer-motion".[31m
+    at getRollupError (file:
+///C:/Kiaan/Backup%20Evi%20C
+linic/Backup%20Evi%20Clinic/
+Frontend/node_modules/rollup
+/dist/es/shared/parseAst.js:
+401:41)
+    at error (file:///C:/Kia
+an/Backup%20Evi%20Clinic/Bac
+kup%20Evi%20Clinic/Frontend/
+node_modules/rollup/dist/es/
+shared/parseAst.js:397:42)
+    at ModuleLoader.loadEntr
+yModule (file:///C:/Kiaan/Ba
+ckup%20Evi%20Clinic/Backup%2
+0Evi%20Clinic/Frontend/node_
+modules/rollup/dist/es/share
+d/node-entry.js:21731:20)
+    at async Promise.all 
+(index 3)
+    at async Promise.all 
+(index 0)[39m

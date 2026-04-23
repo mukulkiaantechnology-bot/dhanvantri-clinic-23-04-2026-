@@ -1,0 +1,338 @@
+.dashboard-home {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem;
+    color: #94A3B8;
+    font-weight: 600;
+}
+
+.loader {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #EEF2FF;
+    border-top-color: #2D3BAE;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.gap-sm {
+    gap: 0.5rem;
+}
+
+.gap-md {
+    gap: 1rem;
+}
+
+/* Page Header Branding */
+.page-header h2 {
+    font-size: 1.875rem !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, #1E1B4B 0%, #2D3BAE 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Stats Cards Modernization */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: #FFFFFF;
+    border: 1px solid #F1F5F9;
+    border-radius: 20px;
+    padding: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-color: #E2E8F0;
+}
+
+.stat-icon-square {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+}
+
+.stat-label {
+    font-size: 0.8125rem;
+    color: #64748B;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    margin: 0.25rem 0;
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    font-weight: 600;
+}
+
+/* Clinics Grid - Ultra Premium Cards */
+.clinics-grid-detailed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+}
+
+.clinic-perf-card {
+    background: #FFFFFF;
+    border-radius: 24px;
+    border: 1px solid #F1F5F9;
+    padding: 2rem;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.clinic-perf-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #3F46B8, #10B981);
+    opacity: 0.6;
+}
+
+.clinic-perf-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: #3F46B8;
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.card-header-flex h4 {
+    color: #1E1B4B;
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.expiry-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.expiry-badge.urgent {
+    background: #FEE2E2;
+    color: #B91C1C;
+}
+
+.expiry-badge.warning {
+    background: #FFFBEB;
+    color: #B45309;
+}
+
+.expiry-badge.safe {
+    background: #ECFDF5;
+    color: #065F46;
+}
+
+/* Metrics Grid - 4 Columns Layout */
+.card-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.metric-item label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-item strong {
+    font-size: 1.125rem;
+    color: #334155;
+    font-weight: 700;
+}
+
+.metric-item.highlight {
+    grid-column: span 2;
+    background: #F8FAFC;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+}
+
+.metric-item.highlight strong {
+    color: #2D3BAE;
+    font-size: 1.25rem;
+}
+
+.card-footer-info {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #F1F5F9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Alert Section Upgrade */
+.dashboard-section-card {
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    background: #F8FAFC;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.alert-list {
+    padding: 1rem;
+}
+
+.alert-item {
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    background: #FFFFFF;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid #F1F5F9;
+    transition: all 0.2s ease;
+}
+
+.alert-item:hover {
+    background: #FAFBFF;
+    border-color: #D6BCFA;
+}
+
+.alert-item svg {
+    font-size: 1.5rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Customizations */
+@media (max-width: 1400px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .clinics-grid-detailed {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .metric-item.highlight {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Stability for buttons */
+.btn-no-hover,
+.btn-no-hover:hover,
+.btn-no-hover:active,
+.btn-no-hover:focus {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    transition: none !important;
+    transform: none !important;
+    background: var(--primary-gradient) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--white) !important;
+}
+
+.btn-no-hover::before,
+.btn-no-hover::after {
+    display: none !important;
+}

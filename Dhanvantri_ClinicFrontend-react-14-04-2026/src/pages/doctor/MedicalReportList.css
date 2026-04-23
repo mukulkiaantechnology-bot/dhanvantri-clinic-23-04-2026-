@@ -1,0 +1,819 @@
+/* ====================== Medical Report List Page ====================== */
+.mrl-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    animation: mrlFadeIn 0.4s ease-out;
+}
+
+@keyframes mrlFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ----- Stats Grid ----- */
+.mrl-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.mrl-stat-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #F1F5F9;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.2s;
+}
+
+.mrl-stat-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+}
+
+.mrl-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.mrl-stat-info p {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 4px;
+}
+
+.mrl-stat-info h3 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    margin: 0;
+    line-height: 1;
+}
+
+/* ----- Controls ----- */
+.mrl-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.75rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #F1F5F9;
+}
+
+.mrl-search-box {
+    position: relative;
+    flex: 1;
+    min-width: 260px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #F8FAFC;
+    border: 2px solid #F1F5F9;
+    border-radius: 12px;
+    padding: 0.7rem 1rem;
+    transition: border-color 0.2s;
+}
+
+.mrl-search-box:focus-within {
+    border-color: #C7D2FE;
+    background: #fff;
+}
+
+.mrl-search-box>svg {
+    color: #94A3B8;
+    flex-shrink: 0;
+}
+
+.mrl-search-box input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1E293B;
+    outline: none;
+}
+
+.mrl-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94A3B8;
+    display: flex;
+    padding: 0;
+    transition: color 0.15s;
+}
+
+.mrl-clear:hover {
+    color: #1E293B;
+}
+
+.mrl-filter-select {
+    display: flex;
+    align-items: center;
+}
+
+.mrl-filter-select select {
+    background-color: #F8FAFC;
+    border: 2px solid #F1F5F9;
+    border-radius: 12px;
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    transition: all 0.2s;
+}
+
+.mrl-filter-select select:hover {
+    border-color: #C7D2FE;
+}
+
+.mrl-filter-select select:focus {
+    border-color: #4F46E5;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+/* ----- Table Card ----- */
+.mrl-table-card {
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #F1F5F9;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.mrl-table-header {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid #F1F5F9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mrl-table-header h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    margin: 0;
+}
+
+.mrl-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748B;
+    background: #F1F5F9;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+}
+
+/* ----- Patient Cell ----- */
+.mrl-patient-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mrl-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366F1, #8B5CF6);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mrl-patient-cell strong {
+    display: block;
+    font-size: 0.9rem;
+    color: #1E293B;
+}
+
+.mrl-mrn {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    font-family: monospace;
+}
+
+/* ----- Type Badge ----- */
+.mrl-type-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+/* ----- Details Cell ----- */
+.mrl-details-cell {
+    max-width: 260px;
+    font-size: 0.85rem;
+    color: #475569;
+}
+
+.mrl-no-data {
+    color: #CBD5E1;
+    font-style: italic;
+}
+
+/* ----- Medicines Cell ----- */
+.mrl-medicines-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.mrl-med-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #F0FDF4;
+    color: #16A34A;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.mrl-more-tag {
+    font-size: 0.72rem;
+    color: #94A3B8;
+    font-weight: 600;
+}
+
+/* ----- Date Cell ----- */
+.mrl-date-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+    color: #334155;
+    font-weight: 500;
+}
+
+.mrl-date-sub {
+    font-size: 0.72rem;
+    color: #94A3B8;
+}
+
+/* ----- Action Buttons ----- */
+.mrl-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.mrl-action-btn {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.18s;
+}
+
+.mrl-action-btn.view {
+    background: #EEF2FF;
+    color: #4F46E5;
+}
+
+.mrl-action-btn.view:hover {
+    background: #4F46E5;
+    color: #fff;
+}
+
+.mrl-action-btn.edit {
+    background: #F0FDF4;
+    color: #16A34A;
+}
+
+.mrl-action-btn.edit:hover {
+    background: #16A34A;
+    color: #fff;
+}
+
+.mrl-action-btn.download {
+    background: linear-gradient(135deg, #2D3BAE 0%, #1E1B4B 100%);
+    color: #fff;
+}
+
+.mrl-action-btn.download:hover {
+    box-shadow: 0 4px 12px rgba(45, 59, 174, 0.3);
+    transform: translateY(-2px);
+}
+
+.mrl-action-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ----- Loading & Empty ----- */
+.mrl-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 2rem;
+    color: #64748B;
+}
+
+.mrl-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #E2E8F0;
+    border-top-color: #6366F1;
+    border-radius: 50%;
+    animation: mrlSpin 0.8s linear infinite;
+}
+
+@keyframes mrlSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.mrl-empty {
+    padding: 5rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: #64748B;
+}
+
+.mrl-empty>svg {
+    color: #CBD5E1;
+}
+
+.mrl-empty h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    margin: 0;
+}
+
+.mrl-empty p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ============================================================
+   FULL REPORT VIEW OVERLAY
+============================================================ */
+.mrl-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-y: auto;
+    animation: mrlFadeIn 0.2s ease-out;
+}
+
+.mrl-full-view {
+    background: #fff;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    margin: auto;
+}
+
+/* FV Header */
+.mrl-fv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #1E1B4B, #4338CA);
+    color: #fff;
+    gap: 1rem;
+}
+
+.mrl-fv-clinic {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mrl-fv-clinic img {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px;
+}
+
+.mrl-fv-clinic h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.mrl-fv-clinic p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.mrl-fv-actions-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.mrl-fv-pdf-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.mrl-fv-pdf-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.mrl-fv-pdf-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.mrl-fv-close {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1rem;
+    transition: background 0.18s;
+}
+
+.mrl-fv-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* FV Body */
+.mrl-fv-body {
+    padding: 2rem;
+}
+
+.mrl-fv-type-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.mrl-fv-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #EEF2FF;
+    color: #4F46E5;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+}
+
+.mrl-fv-date {
+    font-size: 0.85rem;
+    color: #64748B;
+    font-weight: 500;
+}
+
+/* Info Grid */
+.mrl-fv-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    background: #F8FAFC;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #F1F5F9;
+}
+
+.mrl-fv-info-block label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.mrl-fv-info-block h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    margin: 0;
+}
+
+.mrl-fv-info-block p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #334155;
+    margin: 0;
+}
+
+.mrl-fv-divider {
+    border: none;
+    border-top: 1.5px solid #F1F5F9;
+    margin: 1.25rem 0;
+}
+
+/* Sections */
+.mrl-fv-section {
+    margin-bottom: 1.75rem;
+}
+
+.mrl-fv-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.mrl-fv-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+.mrl-fv-field.full {
+    grid-column: 1 / -1;
+}
+
+.mrl-fv-field label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94A3B8;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.mrl-fv-field p {
+    font-size: 0.9rem;
+    color: #334155;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.mrl-fv-text {
+    font-size: 0.9rem;
+    color: #334155;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+/* Sick Leave */
+.mrl-fv-sick-leave {
+    background: #F8FAFC;
+    border: 1px solid #F1F5F9;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.mrl-fv-sick-leave h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 1rem;
+}
+
+.mrl-fv-sick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+.mrl-fv-sick-grid label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #94A3B8;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.mrl-fv-sick-grid p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1E293B;
+    margin: 0;
+}
+
+/* Orders */
+.mrl-fv-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.mrl-fv-order-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    border-radius: 10px;
+    background: #F8FAFC;
+    border: 1px solid #F1F5F9;
+}
+
+.mrl-fv-order-type {
+    display: inline-block;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.mrl-fv-order-type.lab {
+    background: #EFF6FF;
+    color: #1D4ED8;
+}
+
+.mrl-fv-order-type.radiology {
+    background: #FFF7ED;
+    color: #C2410C;
+}
+
+.mrl-fv-order-type.pharmacy {
+    background: #F0FDF4;
+    color: #15803D;
+}
+
+.mrl-fv-order-body strong {
+    font-size: 0.9rem;
+    color: #1E293B;
+}
+
+.mrl-fv-order-body span {
+    font-size: 0.85rem;
+    color: #64748B;
+}
+
+.mrl-fv-order-instr {
+    margin: 4px 0 0;
+    font-size: 0.8rem;
+    color: #64748B;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* Signatures */
+.mrl-fv-sigs {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1.5px dashed #E2E8F0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.mrl-fv-sig-block {
+    min-width: 160px;
+}
+
+.mrl-fv-sig-line {
+    height: 1px;
+    background: #334155;
+    margin-bottom: 8px;
+    width: 160px;
+}
+
+.mrl-fv-sig-block p {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1E293B;
+    margin: 0;
+}
+
+.mrl-fv-sig-block span {
+    font-size: 0.75rem;
+    color: #64748B;
+}
+
+.mrl-fv-disclaimer {
+    font-size: 0.72rem;
+    color: #94A3B8;
+    font-style: italic;
+    max-width: 260px;
+    text-align: right;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1024px) {
+    .mrl-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .mrl-stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mrl-controls {
+        flex-direction: column;
+    }
+
+    .mrl-fv-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mrl-fv-fields-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mrl-fv-sick-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mrl-fv-sigs {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .mrl-fv-disclaimer {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .mrl-stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

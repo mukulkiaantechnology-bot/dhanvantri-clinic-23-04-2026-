@@ -1,0 +1,215 @@
+/* ===================================
+   CLINIC SYSTEM HIGHLIGHT SECTION
+   =================================== */
+
+.clinic-highlight {
+    background: var(--primary-gradient);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.clinic-content {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 4rem;
+    align-items: center;
+    padding-top: var(--spacing-xl);
+}
+
+/* Illustration Side */
+.clinic-visual {
+    position: relative;
+    z-index: 1;
+}
+
+.visual-wrapper {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.visual-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Highlights Side */
+.clinic-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.highlight-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--transition-normal);
+}
+
+.highlight-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(8px);
+}
+
+.highlight-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+}
+
+.highlight-content {
+    flex: 1;
+}
+
+.highlight-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.125rem;
+    color: var(--white);
+}
+
+.highlight-description {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* CTA Button */
+.clinic-cta {
+    background: var(--white);
+    color: var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.clinic-cta:hover {
+    background: var(--accent-bg);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Right Side - Visual */
+.clinic-visual {
+    position: relative;
+}
+
+.visual-wrapper {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+}
+
+.visual-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.visual-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: rgba(255, 255, 255, 0.2);
+    filter: blur(60px);
+    z-index: -1;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 1024px) {
+    .clinic-content {
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .clinic-content {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .clinic-text {
+        max-width: 100%;
+    }
+
+    .clinic-title {
+        font-size: 1.875rem;
+    }
+
+    .highlights-grid {
+        gap: var(--spacing-md);
+    }
+
+    .highlight-item {
+        padding: 1rem;
+    }
+
+    .highlight-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .clinic-cta {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .clinic-visual {
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .badge {
+        font-size: 0.8125rem;
+        padding: 0.4rem 0.875rem;
+    }
+
+    .clinic-title {
+        font-size: 1.625rem;
+    }
+
+    .clinic-description {
+        font-size: 1rem;
+    }
+
+    .highlight-title {
+        font-size: 1rem;
+    }
+
+    .highlight-description {
+        font-size: 0.875rem;
+    }
+}

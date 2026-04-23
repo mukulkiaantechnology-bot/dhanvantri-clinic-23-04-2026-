@@ -1,0 +1,907 @@
+.invoices-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Stats Cards Section */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: #FFFFFF;
+    border-radius: 20px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #F1F5F9;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    border-color: var(--secondary-color);
+}
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.stat-card:nth-child(1):hover::after {
+    background: #3B82F6;
+}
+
+.stat-card:nth-child(2):hover::after {
+    background: #8B5CF6;
+}
+
+.stat-card:nth-child(3):hover::after {
+    background: #10B981;
+}
+
+.stat-card:nth-child(4):hover::after {
+    background: #EF4444;
+}
+
+.stat-icon-square {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-label {
+    font-size: 0.8125rem;
+    color: #64748B;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.stat-value {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    margin: 0;
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+}
+
+/* Advanced Filters System */
+.filters-container {
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #F1F5F9;
+    margin-top: 1rem;
+}
+
+.filters-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.search-box-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    padding: 0.875rem 1.25rem;
+    border-radius: 12px;
+    min-width: 380px;
+    flex: 1;
+    color: #64748B;
+    transition: all 0.3s ease;
+}
+
+.search-box-wrap:focus-within {
+    background: #FFFFFF;
+    border-color: #2D3BAE;
+    box-shadow: 0 0 0 4px rgba(45, 59, 174, 0.1);
+}
+
+.search-box-wrap input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    width: 100%;
+    color: #1E293B;
+    font-weight: 500;
+}
+
+.filters-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.filter-item label {
+    font-size: 0.625rem;
+    font-weight: 800;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-left: 0.25rem;
+}
+
+.filter-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #F1F5F9;
+    padding: 0.625rem 1rem;
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.filter-input-group:focus-within {
+    border-color: #2D3BAE;
+    background: #FFFFFF;
+}
+
+.filter-input-group select,
+.filter-input-group input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1E293B;
+    cursor: pointer;
+    min-width: 120px;
+}
+
+.btn-apply {
+    background: #2D3BAE;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    margin-bottom: 2px;
+}
+
+.btn-apply:hover {
+    background: #1E1B4B;
+    box-shadow: 0 4px 12px rgba(45, 59, 174, 0.3);
+}
+
+/* Premium Table Styles */
+.table-container {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #F1F5F9;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background: #F8FAFC;
+    padding: 1.25rem 2rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 2px solid #F1F5F9;
+}
+
+.data-table td {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 0.9375rem;
+    color: #334155;
+    vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table tr:hover td {
+    background-color: #FAFBFF;
+}
+
+/* Table Content Design */
+.invoice-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: #2D3BAE;
+    background: #EEF2FF;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+}
+
+.amount-display {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: #1E1B4B;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1.25rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-pill::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-pill.paid {
+    background: #E1F9F0;
+    color: #065F46;
+}
+
+.status-pill.paid::before {
+    background: #10B981;
+}
+
+.status-pill.unpaid {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.status-pill.unpaid::before {
+    background: #EF4444;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 5rem 2rem;
+    text-align: center;
+    color: #94A3B8;
+}
+
+.empty-state svg {
+    margin-bottom: 1.5rem;
+    opacity: 0.2;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .filters-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box-wrap {
+        min-width: 100%;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .data-table {
+        min-width: 900px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filters-actions {
+        width: 100%;
+    }
+
+    .filter-item {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .btn-apply {
+        width: 100%;
+    }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+
+    .invoice-print-layout {
+        padding: 0.5rem;
+    }
+
+    .view-header-main h1 {
+        font-size: 2rem !important;
+    }
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: #64748B;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: #F1F5F9;
+    color: #2D3BAE;
+}
+
+.invoice-print-layout {
+    padding: 1rem;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.grid {
+    display: grid;
+}
+
+.grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.mt-lg {
+    margin-top: 1.5rem;
+}
+
+.mt-xl {
+    margin-top: 2.5rem;
+}
+
+.p-lg {
+    padding: 1.5rem;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-muted {
+    color: #64748B;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.gap-md {
+    gap: 1rem;
+}
+
+.invoice-print-layout {
+    font-family: 'Inter', sans-serif;
+    color: #1E293B;
+}
+
+.mt-2xl {
+    margin-top: 3.5rem;
+}
+
+.pt-xl {
+    padding-top: 2.5rem;
+}
+
+.p-sm {
+    padding: 0.5rem;
+}
+
+.invoice-modal-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.invoice-info-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.ml-sm {
+    margin-left: 0.5rem;
+}
+
+.mt-xs {
+    margin-top: 0.25rem;
+}
+
+.mb-xs {
+    margin-bottom: 0.25rem;
+}
+
+.text-right-sm {
+    text-align: right;
+}
+
+.align-items-end-sm {
+    align-items: flex-end;
+}
+
+.data-table-minimal {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table-minimal th {
+    border-bottom: 2px solid #F1F5F9;
+}
+
+.billing-summary-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+@media (max-width: 768px) {
+    .invoice-info-row {
+        justify-content: flex-start;
+    }
+
+    .text-right-sm {
+        text-align: left;
+    }
+
+    .align-items-end-sm {
+        align-items: flex-start;
+    }
+}
+
+@media print {
+    .no-print-mt {
+        margin-top: 0 !important;
+    }
+}
+
+.action-btn-mini {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #E2E8F0;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+}
+
+.btn-mark-paid {
+    color: #10B981;
+}
+
+.btn-mark-paid:hover {
+    background: #E1F9F0;
+    border-color: #10B981;
+}
+
+.btn-mark-unpaid {
+    color: #EF4444;
+}
+
+.btn-mark-unpaid:hover {
+    background: #FEE2E2;
+    border-color: #EF4444;
+}
+
+.btn-view-invoice {
+    color: #2D3BAE;
+}
+
+.btn-view-invoice:hover {
+    background: #EEF2FF;
+    border-color: #2D3BAE;
+}
+
+.status-update-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.status-change-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.status-select {
+    padding: 0.5rem 1rem;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: #1E293B;
+    background: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.status-select:focus {
+    border-color: #2D3BAE;
+}
+
+/* ================= PRINT SYSTEM (CRITICAL FIX) ================= */
+
+/* ================= INVOICE PRINT SYSTEM (ULTIMATE FIX) ================= */
+
+@media print {
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    /* 1. Global Visibility Reset */
+    body * {
+        visibility: hidden !important;
+        display: none !important;
+    }
+
+    /* 2. ATOMIC NEUTRALIZATION: Open up every parent container in the path */
+    html,
+    body,
+    #root,
+    .app-container,
+    .dashboard-layout,
+    .dashboard-main,
+    .dashboard-content,
+    .main-content,
+    .invoices-page,
+    /* Modal ancestry */
+    .modal-overlay,
+    .modal-content,
+    .modal-body,
+    .invoice-modal-content-wrapper,
+    /* The Target */
+    #print-area,
+    #print-area * {
+        visibility: visible !important;
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        background: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #000 !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* 3. Re-enable flex for specific layout needs inside the invoice */
+    .d-flex,
+    .view-header-main,
+    .grid-2,
+    .invoice-info-row {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    /* 4. The Invoice Print Canvas */
+    #print-area {
+        background: white !important;
+        padding: 10mm !important;
+        border: none !important;
+    }
+
+    /* 5. Clean up professional branding and data */
+    .view-header-main {
+        border-bottom: 2px solid #000 !important;
+        padding-bottom: 20px !important;
+        margin-bottom: 20px !important;
+        justify-content: space-between !important;
+    }
+
+    .view-header-main h1 {
+        font-size: 32pt !important;
+        color: #1E1B4B !important;
+        line-height: 1 !important;
+    }
+
+    .data-table-minimal {
+        width: 100% !important;
+        margin-top: 20px !important;
+        border-collapse: collapse !important;
+    }
+
+    .data-table-minimal th {
+        background: #f1f5f9 !important;
+        padding: 10px !important;
+        border-bottom: 2px solid #000 !important;
+        font-size: 10pt !important;
+        -webkit-print-color-adjust: exact !important;
+    }
+
+    .data-table-minimal td {
+        padding: 12px 10px !important;
+        border-bottom: 1px solid #ddd !important;
+        font-size: 11pt !important;
+    }
+
+    .billing-summary-card {
+        margin-top: 30px !important;
+        padding: 20px !important;
+        border: 1px solid #eee !important;
+        width: 300px !important;
+        margin-left: auto !important;
+    }
+
+    /* 6. Strict Exclusion of UI debris */
+    .no-print,
+    .modal-header,
+    .modal-actions,
+    .close-btn,
+    button,
+    .sidebar,
+    .top-bar {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}
+
+/* Action Buttons Styling - More Prominent */
+.action-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.action-btn-mini {
+    width: 42px;
+    /* Bigger buttons */
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #E2E8F0;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.25rem;
+}
+
+.btn-mark-paid {
+    color: #10B981;
+    border-color: #E1F9F0;
+}
+
+.btn-mark-paid:hover {
+    background: #10B981;
+    color: white;
+    border-color: #10B981;
+    transform: scale(1.1);
+}
+
+.btn-mark-unpaid {
+    color: #EF4444;
+    border-color: #FEE2E2;
+}
+
+.btn-mark-unpaid:hover {
+    background: #EF4444;
+    color: white;
+    border-color: #EF4444;
+    transform: scale(1.1);
+}
+
+.btn-view-invoice {
+    color: #2D3BAE;
+    border-color: #EEF2FF;
+}
+
+.btn-view-invoice:hover {
+    background: #2D3BAE;
+    color: white;
+    border-color: #2D3BAE;
+    transform: scale(1.1);
+}
+
+.status-update-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+}
+
+.status-change-label {
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: #1E1B4B;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.status-select {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 2px solid #E2E8F0;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1E293B;
+    background: white;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.status-select:focus {
+    border-color: #2D3BAE;
+}
+
+/* Stable Button - Disables all hover/active effects */
+.btn-no-hover,
+.btn-no-hover:hover,
+.btn-no-hover:active,
+.btn-no-hover:focus {
+    transform: none !important;
+    box-shadow: 0 4px 12px rgba(45, 59, 174, 0.25) !important;
+    filter: none !important;
+    transition: none !important;
+    outline: none !important;
+}
+
+/* Clinic Info Cell with Avatar */
+.clinic-info-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.clinic-avatar-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    flex-shrink: 0;
+}
+
+.clinic-avatar-sm img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.clinic-avatar {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2D3BAE;
+}
+
+.clinic-details-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fallback-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #f8fafc;
+}

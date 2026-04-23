@@ -1,0 +1,39 @@
+/* ===================================
+   APP COMPONENT STYLES
+   =================================== */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Smooth scroll offset for fixed header */
+html {
+  scroll-padding-top: 100px;
+}
+
+body {
+  padding-top: 0;
+}
+
+/* Selection color */
+::selection {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+::-moz-selection {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+/* --- PROFESSIONAL PRINT STYLES REMOVED TO PREVENT CONFLICTS WITH INVOICE PRINT ---
+@media print {
+  ...
+}
+--- */

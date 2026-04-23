@@ -1,0 +1,449 @@
+.reception-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.dashboard-welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-welcome h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-welcome p {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Stats Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.5rem 1rem;
+    /* Smaller padding */
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid transparent;
+}
+
+.stat-card.primary-border {
+    border-color: #23286B;
+}
+
+.stat-icon-square {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 0.35rem;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+/* Today's Schedule Section */
+.section-header-centered {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.section-header-centered h3 {
+    text-align: center;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.text-link-blue {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    color: #3f46b8;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.text-link-blue:hover {
+    color: #23286B;
+    text-decoration: underline;
+}
+
+.badge-pill-inline {
+    background: #f1f5f9;
+    color: #1e293b;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 50px;
+    margin-left: 0.75rem;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-icon-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.btn-icon-circle.success {
+    color: #10b981;
+}
+
+.btn-icon-circle.success:hover {
+    background: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.btn-icon-circle.danger {
+    color: #ef4444;
+}
+
+.btn-icon-circle.danger:hover {
+    background: #ef4444;
+    color: white;
+    border-color: #ef4444;
+}
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.schedule-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+}
+
+.schedule-row:hover {
+    background: #f1f5f9;
+}
+
+.schedule-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+    min-width: 100px;
+}
+
+.schedule-time svg {
+    color: #3f46b8;
+}
+
+.schedule-patient {
+    font-weight: 700;
+    color: #1e293b;
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.schedule-doctor {
+    color: #64748b;
+    font-size: 0.875rem;
+    flex: 1;
+}
+
+.status-pill-mini {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    text-transform: capitalize;
+}
+
+.status-pill-mini.checked-in {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-pill-mini.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Quick Actions List */
+.quick-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.action-row-block {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: #f8fafceb;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-row-block:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+}
+
+.action-icon-dark {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, #2D3BAE 0%, #1E1B4B 100%);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.action-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.action-text strong {
+    font-size: 0.9375rem;
+    color: #1e293b;
+}
+
+.action-text span {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.empty-msg {
+    text-align: center;
+    color: #94a3b8;
+    padding: 2rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .dashboard-welcome {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions .btn {
+        flex: 1;
+    }
+
+    .schedule-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .schedule-patient,
+    .schedule-doctor {
+        margin: 0;
+    }
+
+    .status-pill-mini {
+        align-self: flex-end;
+    }
+
+    .section-header-centered h3 {
+        text-align: left;
+    }
+
+    .text-link-blue {
+        right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-actions {
+        flex-direction: column;
+    }
+}
+
+/* Modal Styling Refinements */
+.modal-actions-refined {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btn-cancel {
+    padding: 0.75rem 2rem;
+    background: white;
+    border: 1.5px solid #2D3BAE;
+    color: #2D3BAE;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: #f8fafc;
+}
+
+.btn-save {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #2D3BAE 0%, #1E1B4B 100%);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-save:hover {
+    background: linear-gradient(135deg, #2D3BAE 0%, #1E1B4B 100%);
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(45, 59, 174, 0.2);
+}
+
+/* Stability for buttons */
+.btn-no-hover,
+.btn-no-hover:hover,
+.btn-no-hover:active,
+.btn-no-hover:focus {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    transition: none !important;
+    transform: none !important;
+    background: var(--primary-gradient) !important;
+    box-shadow: var(--shadow-md) !important;
+    color: var(--white) !important;
+}
+
+
+.btn-new-appointment-static {
+    background: linear-gradient(135deg, #2D3BAE 0%, #1E1B4B 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(45, 59, 174, 0.2) !important;
+}
+
+.btn-new-appointment-static:hover,
+.btn-new-appointment-static:active,
+.btn-new-appointment-static:focus {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(45, 59, 174, 0.3) !important;
+    filter: brightness(1.1);
+}
+
+.row-clickable-payment {
+    transition: all 0.2s ease;
+    border-left: 4px solid #F59E0B !important;
+}
+
+.row-clickable-payment:hover {
+    background: #FFF7ED !important;
+    transform: translateX(4px);
+}
+
+.highlight-row-focus {
+    background-color: #fef3c7 !important;
+    animation: pulseHighlight 2s infinite;
+    border-left: 4px solid #f59e0b !important;
+}
+
+@keyframes pulseHighlight {
+    0% {
+        background-color: #fef3c7;
+    }
+
+    50% {
+        background-color: #fffbeb;
+    }
+
+    100% {
+        background-color: #fef3c7;
+    }
+}
