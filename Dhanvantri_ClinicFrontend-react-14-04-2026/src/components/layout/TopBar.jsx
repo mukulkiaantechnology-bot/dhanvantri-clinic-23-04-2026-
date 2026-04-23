@@ -179,7 +179,7 @@ const TopBar = ({ onToggleSidebar }) => {
                             </div>)}
                     </div>) : (<div className={`clinic-selector ${displayClinics.length > 1 ? 'clickable' : ''}`} onClick={() => displayClinics.length > 1 && setIsClinicDropdownOpen(!isClinicDropdownOpen)}>
                         <img src={selectedClinic?.logo ? (selectedClinic.logo.startsWith('http') ? selectedClinic.logo : `${API_URL.replace(/\/api$/, '')}${selectedClinic.logo.startsWith('/') ? selectedClinic.logo : `/${selectedClinic.logo}`}`) : "/sidebar-logo.jpg"} alt="Logo" className="clinic-icon" style={{ width: '24px', height: '24px', objectFit: 'contain', borderRadius: '4px' }}/>
-                        <span className="clinic-name">{selectedClinic?.name || 'Clinic'}</span>
+                        <span className="clinic-name">{fallbackPillName || 'Clinic'}</span>
                         {displayClinics.length > 1 && <FiChevronDown className={`chevron ${isClinicDropdownOpen ? 'open' : ''}`}/>}
 
                         {isClinicDropdownOpen && (<div className="clinic-dropdown">

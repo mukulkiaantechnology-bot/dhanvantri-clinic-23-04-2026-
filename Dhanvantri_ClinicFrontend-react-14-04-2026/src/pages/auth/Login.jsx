@@ -14,6 +14,7 @@ const Login = () => {
     const [lockoutTime, setLockoutTime] = useState(null);
     const [step, setStep] = useState('login');
     const [otp, setOtp] = useState('');
+    const [debugOtp, setDebugOtp] = useState('');
     const [timer, setTimer] = useState(30);
     const { login, confirmOTP, lockoutUntil, handleRedirectByRole, selectClinicById } = useAuth();
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ const Login = () => {
     }, [step, timer]);
     const handleResendOTP = () => {
         setTimer(30);
+        
         // Mock resend call
         console.log('OTP Resent to:', email);
     };
@@ -64,6 +66,7 @@ const Login = () => {
     const autofillCredentials = (demoEmail, demoPassword = 'admin123') => {
         setEmail(demoEmail);
         setPassword(demoPassword);
+        setDebugOtp('');
         setError('');
         setStep('login');
     };
@@ -80,10 +83,12 @@ const Login = () => {
                     localStorage.removeItem('ev_remembered_email');
                 }
                 if (result.otpRequired) {
+                    setDebugOtp(result.debugOtp || '');
                     setStep('otp');
                     setTimer(30);
                 }
                 else {
+                    setDebugOtp('');
                     const user = result.user;
                     const isSuperAdmin = user?.roles?.some((r) => r.toUpperCase() === 'SUPER_ADMIN');
                     const isPatient = user?.role === 'PATIENT';
@@ -146,6 +151,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setTimer(30);
+        setDebugOtp('');
         performLogin(email, password);
     };
     const isLocked = !!(lockoutTime && lockoutTime > Date.now());
@@ -237,6 +243,9 @@ const Login = () => {
                                     <input type="text" id="otp" placeholder="000000" value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} required autoFocus className="otp-input-field"/>
                                 </div>
                             </div>
+                            {debugOtp && (<div style={{ textAlign: 'center', marginTop: '-0.25rem', marginBottom: '0.5rem', fontSize: '13px', color: '#334155', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '8px', padding: '0.55rem 0.75rem' }}>
+                                    Demo OTP: <strong style={{ letterSpacing: '2px', color: '#1e293b' }}>{debugOtp}</strong>
+                                </div>)}
 
                             <div className="otp-timer-wrap" style={{ textAlign: 'center', fontSize: '13px', color: '#64748b' }}>
                                 {timer > 0 ? (<span>Resend code in <strong>{timer}s</strong></span>) : (<button type="button" className="btn-link" onClick={handleResendOTP} style={{ background: 'none', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontWeight: 600 }}>Resend OTP now</button>)}
@@ -246,7 +255,10 @@ const Login = () => {
                                 {isLoading ? 'Verifying OTP...' : 'Confirm & Login'}
                             </button>
 
-                            <button type="button" className="btn-link mt-sm" onClick={() => setStep('login')} style={{ display: 'block', margin: '0.5rem auto', border: 'none', background: 'none', color: '#94a3b8', cursor: 'pointer', fontWeight: 600, fontSize: '13px' }}>
+                            <button type="button" className="btn-link mt-sm" onClick={() => {
+                    setDebugOtp('');
+                    setStep('login');
+                }} style={{ display: 'block', margin: '0.5rem auto', border: 'none', background: 'none', color: '#94a3b8', cursor: 'pointer', fontWeight: 600, fontSize: '13px' }}>
                                 Back to Login
                             </button>
                         </form>) : (<div className="login-form">
@@ -260,7 +272,7 @@ const Login = () => {
 
                             <div className="qr-container" style={{ textAlign: 'center', background: '#f8fafc', padding: '15px', borderRadius: '12px', marginBottom: '20px', border: '2px dashed #e2e8f0' }}>
                                 <div style={{ width: '150px', height: '150px', background: '#fff', margin: '0 auto', display: 'flex', alignItems: 'center', justifyItems: 'center', border: '1px solid #eee' }}>
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth://totp/EVClinic:rehan@ev.com?secret=JBSWY3DPEHPK3PXP&issuer=EVClinic" alt="QR Code" style={{ width: '100%' }}/>
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth://totp/DhanvantriHospital:rehan@ev.com?secret=JBSWY3DPEHPK3PXP&issuer=DhanvantriHospital" alt="QR Code" style={{ width: '100%' }}/>
                                 </div>
                                 <div className="mt-md" style={{ fontSize: '12px', color: '#64748b' }}>
                                     Manual Key: <strong style={{ letterSpacing: '2px', color: '#1e293b' }}>JBSW Y3DP EHPK 3PXP</strong>

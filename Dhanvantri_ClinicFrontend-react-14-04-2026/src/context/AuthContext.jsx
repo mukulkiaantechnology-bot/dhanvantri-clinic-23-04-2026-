@@ -3,6 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/auth.service';
 import { useToast } from './ToastContext';
 const AuthContext = createContext(null);
+const OTP_TRUST_STORAGE_PREFIX = 'ev_trusted_otp_';
+
+const getOtpTrustStorageKey = (email) => `${OTP_TRUST_STORAGE_PREFIX}${String(email || '').trim().toLowerCase()}`;
+
+const getTrustedOtpToken = (email) => {
+    if (!email)
+        return null;
+    const raw = localStorage.getItem(getOtpTrustStorageKey(email));
+    if (!raw)
+        return null;
+    try {
+        const parsed = JSON.parse(raw);
+        if (!parsed?.token || !parsed?.expiresAt)
+            return null;
+        if (Date.now() >= new Date(parsed.expiresAt).getTime()) {
+            localStorage.removeItem(getOtpTrustStorageKey(email));
+            return null;
+        }
+        return parsed.token;
+    } catch {
+        localStorage.removeItem(getOtpTrustStorageKey(email));
+        return null;
+    }
+};
+
+const saveTrustedOtpToken = (email, token, expiresAt) => {
+    if (!email || !token || !expiresAt)
+        return;
+    localStorage.setItem(getOtpTrustStorageKey(email), JSON.stringify({
+        token,
+        expiresAt
+    }));
+};
+
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
     const toast = useToast();
@@ -51,11 +85,19 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             console.log('Attempting login for:', email);
-            const response = await authService.login({ email, password });
+            const trustedOtpToken = getTrustedOtpToken(email);
+            const response = await authService.login({ email, password, trustedOtpToken });
             console.log('Login response:', response);
             if (response.success && response.data) {
                 if (response.data.otpRequired) {
-                    return { success: true, otpRequired: true };
+                    // Trusted token is not usable anymore once server asks OTP again.
+                    localStorage.removeItem(getOtpTrustStorageKey(email));
+                    return {
+                        success: true,
+                        otpRequired: true,
+                        devOtp: response.data.devOtp || null,
+                        debugOtp: response.data.devOtp || null
+                    };
                 }
                 else {
                     // Direct login success path
@@ -156,6 +198,9 @@ export const AuthProvider = ({ children }) => {
                 }
                 catch (e) { /* ignore */ }
                 const token = response.data.token;
+                if (response.data.otpTrustToken && response.data.otpTrustedUntil) {
+                    saveTrustedOtpToken(email, response.data.otpTrustToken, response.data.otpTrustedUntil);
+                }
                 localStorage.setItem('ev_token', token);
                 localStorage.setItem('ev_user', JSON.stringify(userData));
                 setUser(userData);
@@ -269,7 +314,7 @@ export const AuthProvider = ({ children }) => {
                     const clinicContext = {
                         id: firstClinic.id,
                         role: firstClinic.role,
-                        name: 'Managed Clinic'
+                        name: firstClinic.name || ''
                     };
                     setSelectedClinic(clinicContext);
                     localStorage.setItem('ev_clinic', JSON.stringify(clinicContext));
@@ -307,9 +352,12 @@ export const AuthProvider = ({ children }) => {
                     contextObj = userData.clinics[0];
                 }
                 if (contextObj) {
+                    const matchedClinicName = Array.isArray(userData?.clinics)
+                        ? userData.clinics.find((c) => Number(c?.id) === Number(contextObj.id))?.name
+                        : '';
                     const cleanContext = {
                         id: contextObj.id,
-                        name: contextObj.name || 'Managed Clinic',
+                        name: contextObj.name || matchedClinicName || '',
                         role: contextObj.role || 'ADMIN', // Force ADMIN if missing
                         modules: contextObj.modules
                     };

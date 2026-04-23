@@ -14,202 +14,20 @@ const signToken = (payload, expires = '1h') => {
     });
 };
 import { sendOTP } from './mail.service.js';
-export const login = async (data, ip, device) => {
-    const { email, password, captchaValue } = data;
-    console.log(`[DEBUG] Attempting login for email: ${email}`);
-    if (!prisma) {
-        console.error('[CRITICAL] Prisma client is undefined! Possible circular dependency.');
-        throw new Error('Database client not initialized');
-    }
-    // 1. Database Check
-    const user = await prisma.user.findUnique({
-        where: { email }
-    });
-    if (!user) {
-        throw new AppError('Incorrect email or password', 401);
-    }
-    // Check lockout
-    if (user.lockoutUntil && user.lockoutUntil > new Date()) {
-        const diff = Math.ceil((user.lockoutUntil.getTime() - Date.now()) / 1000 / 60);
-        throw new AppError(`Account locked. Try again in ${diff} minute(s).`, 401);
-    }
-    // Password verification
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-        const newAttempts = user.failedLoginAttempts + 1;
-        let lockoutUntil = null;
-        if (newAttempts >= 5)
-            lockoutUntil = new Date(Date.now() + 15 * 60 * 1000);
-        await prisma.user.update({
-            where: { id: user.id },
-            data: { failedLoginAttempts: newAttempts, lockoutUntil }
-        });
-        throw new AppError('Incorrect email or password', 401);
-    }
-    // Reset attempts on successful login
-    await prisma.user.update({
-        where: { id: user.id },
-        data: { failedLoginAttempts: 0, lockoutUntil: null }
-    });
-    // Create OTP session (for UI flow). For now, verification accepts any 6-digit OTP.
-    const generatedOtp = String(Math.floor(100000 + Math.random() * 900000));
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
-    await prisma.user.update({
-        where: { id: user.id },
-        data: { otp: generatedOtp, otpExpiry }
-    });
+const OTP_TRUST_HOURS = 12;
+const verifyTrustedOtpToken = (token, userId) => {
+    if (!token)
+        return false;
     try {
-        await sendOTP(user.email, generatedOtp);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
+        return Number(decoded?.id) === Number(userId) && decoded?.type === 'otp_trust';
     }
-    catch (e) {
-        // Keep login flow resilient even if SMTP is not configured.
+    catch {
+        return false;
     }
-    // Attempt to fix potential invalid enum values for Super Admin or others
-    try {
-        await prisma.$executeRawUnsafe(`UPDATE clinicstaff SET role = 'RECEPTIONIST' WHERE role = '' OR role IS NULL`);
-    }
-    catch (e) {
-        // Ignore raw query errors (e.g. if syntax differs)
-    }
-    let staffRecords = [];
-    try {
-        staffRecords = await prisma.clinicstaff.findMany({
-            where: { userId: user.id },
-            include: { clinic: { select: { id: true, status: true } } }
-        });
-    }
-    catch (e) {
-        console.error('Error fetching staff records:', e);
-        if (e.message && e.message.includes('not found in enum')) {
-            console.warn('[AUTH SERVICE] Detected invalid enum value in clinicstaff table. Attempting to proceed with empty staff list.');
-            staffRecords = [];
-        }
-        else {
-            throw e;
-        }
-    }
-    // ── PATIENT multi-clinic flow ────────────────────────────────────────────
-    const isPatientRole = user.role === 'PATIENT' && staffRecords.length === 0;
-    if (isPatientRole) {
-        // Find all clinics where this patient is registered (by email)
-        const patientRecords = await prisma.patient.findMany({
-            where: { email: user.email },
-            include: { clinic: { select: { id: true, name: true, location: true, status: true, logo: true } } }
-        });
-        if (patientRecords.length === 0) {
-            throw new AppError('No clinic registration found for this patient. Please contact your clinic.', 403);
-        }
-        // Filter to active clinics only
-        const activeClinics = patientRecords.filter(p => (p.clinic.status || '').toLowerCase() === 'active');
-        if (activeClinics.length === 0) {
-            throw new AppError('All your registered clinics are currently inactive. Please contact your clinic administrator.', 403);
-        }
-        let targetClinicId = undefined;
-        if (activeClinics.length === 1) {
-            targetClinicId = activeClinics[0].clinicId;
-        }
-        return {
-            success: true,
-            otpRequired: true,
-            user: {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                role: 'PATIENT',
-                roles: ['PATIENT'],
-                clinics: activeClinics.map(p => p.clinicId),
-                patientClinics: activeClinics.map(p => ({
-                    id: p.clinic.id,
-                    name: p.clinic.name,
-                    location: p.clinic.location,
-                    patientId: p.id
-                }))
-            },
-            token: null
-        };
-    }
-    // ── End PATIENT flow ─────────────────────────────────────────────────────
-    // Block login if user is not SUPER_ADMIN and ALL their clinics are inactive
-    const isSuperAdminEarly = user.role === 'SUPER_ADMIN';
-    if (!isSuperAdminEarly && staffRecords.length > 0) {
-        const hasActiveClinic = staffRecords.some((r) => (r.clinic?.status || '').toLowerCase() === 'active');
-        if (!hasActiveClinic) {
-            throw new AppError('Your clinic account is currently inactive. Please contact your administrator.', 403);
-        }
-    }
-    let allRoles = [user.role];
-    staffRecords.forEach((r) => {
-        allRoles.push(r.role);
-        if (r.roles) {
-            try {
-                const multi = JSON.parse(r.roles);
-                if (Array.isArray(multi))
-                    allRoles.push(...multi);
-            }
-            catch (e) { }
-        }
-    });
-    const roles = Array.from(new Set(allRoles)).filter(r => r && r.length > 0);
-    const isSuperAdmin = roles.includes('SUPER_ADMIN') || user.role === 'SUPER_ADMIN';
-    // Determine the primary role for the token
-    let tokenRole = user.role;
-    let targetClinicId = undefined;
-    if (isSuperAdmin) {
-        tokenRole = 'SUPER_ADMIN';
-    }
-    else if (staffRecords.length === 1) {
-        tokenRole = staffRecords[0].role;
-        targetClinicId = staffRecords[0].clinicId;
-    }
-    else if (staffRecords.length > 1) {
-        if (roles.includes('ADMIN'))
-            tokenRole = 'ADMIN';
-        else if (roles.includes('DOCTOR'))
-            tokenRole = 'DOCTOR';
-        else if (roles.includes('RECEPTIONIST'))
-            tokenRole = 'RECEPTIONIST';
-        else
-            tokenRole = staffRecords[0].role;
-    }
-    else {
-        tokenRole = user.role;
-    }
-    return {
-        success: true,
-        otpRequired: true,
-        user: {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-            role: tokenRole,
-            roles,
-            clinics: staffRecords.map((r) => r.clinicId)
-        },
-        token: null
-    };
 };
-export const verifyOTP = async (data, ip, device) => {
-    const { email, otp } = data;
-    const user = await prisma.user.findUnique({
-        where: { email },
-        include: { clinicstaff: true }
-    });
-    if (!user || !user.otpExpiry) {
-        throw new AppError('No verification session found', 400);
-    }
-    if (new Date() > user.otpExpiry) {
-        throw new AppError('Verification code expired', 401);
-    }
-    // Dev mode: accept any 6-digit OTP.
-    if (!/^\d{6}$/.test(String(otp || ''))) {
-        throw new AppError('Enter a valid 6-digit verification code', 401);
-    }
-    // Clear OTP after success
-    await prisma.user.update({
-        where: { id: user.id },
-        data: { otp: null, otpExpiry: null }
-    });
-    const staffRecords = user.clinicstaff;
+const buildAuthenticatedSession = async (user, ip, device, auditAction = '2FA Verification Success') => {
+    const staffRecords = user.clinicstaff || [];
     // Patient flow (no clinicstaff rows)
     if (user.role === 'PATIENT' && staffRecords.length === 0) {
         const patientRecords = await prisma.patient.findMany({
@@ -293,7 +111,7 @@ export const verifyOTP = async (data, ip, device) => {
     // Auditor log
     await prisma.auditlog.create({
         data: {
-            action: '2FA Verification Success',
+            action: auditAction,
             performedBy: user.email,
             userId: user.id,
             ipAddress: ip,
@@ -311,6 +129,234 @@ export const verifyOTP = async (data, ip, device) => {
             clinics: staffRecords.map((r) => r.clinicId)
         },
         token
+    };
+};
+export const login = async (data, ip, device) => {
+    const { email, password, trustedOtpToken } = data;
+    console.log(`[DEBUG] Attempting login for email: ${email}`);
+    if (!prisma) {
+        console.error('[CRITICAL] Prisma client is undefined! Possible circular dependency.');
+        throw new Error('Database client not initialized');
+    }
+    // 1. Database Check
+    const user = await prisma.user.findUnique({
+        where: { email }
+    });
+    if (!user) {
+        throw new AppError('Incorrect email or password', 401);
+    }
+    // Check lockout
+    if (user.lockoutUntil && user.lockoutUntil > new Date()) {
+        const diff = Math.ceil((user.lockoutUntil.getTime() - Date.now()) / 1000 / 60);
+        throw new AppError(`Account locked. Try again in ${diff} minute(s).`, 401);
+    }
+    // Password verification
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+        const newAttempts = user.failedLoginAttempts + 1;
+        let lockoutUntil = null;
+        if (newAttempts >= 5)
+            lockoutUntil = new Date(Date.now() + 15 * 60 * 1000);
+        await prisma.user.update({
+            where: { id: user.id },
+            data: { failedLoginAttempts: newAttempts, lockoutUntil }
+        });
+        throw new AppError('Incorrect email or password', 401);
+    }
+    // Reset attempts on successful login
+    await prisma.user.update({
+        where: { id: user.id },
+        data: { failedLoginAttempts: 0, lockoutUntil: null }
+    });
+    // Reuse 12h trusted OTP session if available for this user.
+    if (verifyTrustedOtpToken(trustedOtpToken, user.id)) {
+        const trustedUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            include: { clinicstaff: true }
+        });
+        if (!trustedUser) {
+            throw new AppError('User not found', 404);
+        }
+        const trustedSession = await buildAuthenticatedSession(trustedUser, ip, device, 'Trusted 2FA session reused');
+        return {
+            success: true,
+            otpRequired: false,
+            ...trustedSession
+        };
+    }
+    // Create OTP session (for UI flow). For now, verification accepts any 6-digit OTP.
+    const generatedOtp = String(Math.floor(100000 + Math.random() * 900000));
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+    await prisma.user.update({
+        where: { id: user.id },
+        data: { otp: generatedOtp, otpExpiry }
+    });
+    try {
+        await sendOTP(user.email, generatedOtp);
+    }
+    catch (e) {
+        // Keep login flow resilient even if SMTP is not configured.
+    }
+    // Attempt to fix potential invalid enum values for Super Admin or others
+    try {
+        await prisma.$executeRawUnsafe(`UPDATE clinicstaff SET role = 'RECEPTIONIST' WHERE role = '' OR role IS NULL`);
+    }
+    catch (e) {
+        // Ignore raw query errors (e.g. if syntax differs)
+    }
+    let staffRecords = [];
+    try {
+        staffRecords = await prisma.clinicstaff.findMany({
+            where: { userId: user.id },
+            include: { clinic: { select: { id: true, status: true } } }
+        });
+    }
+    catch (e) {
+        console.error('Error fetching staff records:', e);
+        if (e.message && e.message.includes('not found in enum')) {
+            console.warn('[AUTH SERVICE] Detected invalid enum value in clinicstaff table. Attempting to proceed with empty staff list.');
+            staffRecords = [];
+        }
+        else {
+            throw e;
+        }
+    }
+    // ── PATIENT multi-clinic flow ────────────────────────────────────────────
+    const isPatientRole = user.role === 'PATIENT' && staffRecords.length === 0;
+    if (isPatientRole) {
+        // Find all clinics where this patient is registered (by email)
+        const patientRecords = await prisma.patient.findMany({
+            where: { email: user.email },
+            include: { clinic: { select: { id: true, name: true, location: true, status: true, logo: true } } }
+        });
+        if (patientRecords.length === 0) {
+            throw new AppError('No clinic registration found for this patient. Please contact your clinic.', 403);
+        }
+        // Filter to active clinics only
+        const activeClinics = patientRecords.filter(p => (p.clinic.status || '').toLowerCase() === 'active');
+        if (activeClinics.length === 0) {
+            throw new AppError('All your registered clinics are currently inactive. Please contact your clinic administrator.', 403);
+        }
+        let targetClinicId = undefined;
+        if (activeClinics.length === 1) {
+            targetClinicId = activeClinics[0].clinicId;
+        }
+        return {
+            success: true,
+            otpRequired: true,
+            devOtp: generatedOtp,
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: 'PATIENT',
+                roles: ['PATIENT'],
+                clinics: activeClinics.map(p => p.clinicId),
+                patientClinics: activeClinics.map(p => ({
+                    id: p.clinic.id,
+                    name: p.clinic.name,
+                    location: p.clinic.location,
+                    patientId: p.id
+                }))
+            },
+            token: null
+        };
+    }
+    // ── End PATIENT flow ─────────────────────────────────────────────────────
+    // Block login if user is not SUPER_ADMIN and ALL their clinics are inactive
+    const isSuperAdminEarly = user.role === 'SUPER_ADMIN';
+    if (!isSuperAdminEarly && staffRecords.length > 0) {
+        const hasActiveClinic = staffRecords.some((r) => (r.clinic?.status || '').toLowerCase() === 'active');
+        if (!hasActiveClinic) {
+            throw new AppError('Your clinic account is currently inactive. Please contact your administrator.', 403);
+        }
+    }
+    let allRoles = [user.role];
+    staffRecords.forEach((r) => {
+        allRoles.push(r.role);
+        if (r.roles) {
+            try {
+                const multi = JSON.parse(r.roles);
+                if (Array.isArray(multi))
+                    allRoles.push(...multi);
+            }
+            catch (e) { }
+        }
+    });
+    const roles = Array.from(new Set(allRoles)).filter(r => r && r.length > 0);
+    const isSuperAdmin = roles.includes('SUPER_ADMIN') || user.role === 'SUPER_ADMIN';
+    // Determine the primary role for the token
+    let tokenRole = user.role;
+    let targetClinicId = undefined;
+    if (isSuperAdmin) {
+        tokenRole = 'SUPER_ADMIN';
+    }
+    else if (staffRecords.length === 1) {
+        tokenRole = staffRecords[0].role;
+        targetClinicId = staffRecords[0].clinicId;
+    }
+    else if (staffRecords.length > 1) {
+        if (roles.includes('ADMIN'))
+            tokenRole = 'ADMIN';
+        else if (roles.includes('DOCTOR'))
+            tokenRole = 'DOCTOR';
+        else if (roles.includes('RECEPTIONIST'))
+            tokenRole = 'RECEPTIONIST';
+        else
+            tokenRole = staffRecords[0].role;
+    }
+    else {
+        tokenRole = user.role;
+    }
+    return {
+        success: true,
+        otpRequired: true,
+        devOtp: generatedOtp,
+        user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: tokenRole,
+            roles,
+            clinics: staffRecords.map((r) => r.clinicId)
+        },
+        token: null
+    };
+};
+export const verifyOTP = async (data, ip, device) => {
+    const { email, otp } = data;
+    const user = await prisma.user.findUnique({
+        where: { email },
+        include: { clinicstaff: true }
+    });
+    if (!user || !user.otpExpiry) {
+        throw new AppError('No verification session found', 400);
+    }
+    if (new Date() > user.otpExpiry) {
+        throw new AppError('Verification code expired', 401);
+    }
+    const otpString = String(otp || '');
+    if (!/^\d{6}$/.test(otpString)) {
+        throw new AppError('Enter a valid 6-digit verification code', 401);
+    }
+    if (!user.otp || String(user.otp) !== otpString) {
+        throw new AppError('Invalid verification code', 401);
+    }
+    // Clear OTP after success
+    await prisma.user.update({
+        where: { id: user.id },
+        data: { otp: null, otpExpiry: null }
+    });
+    const session = await buildAuthenticatedSession(user, ip, device, '2FA Verification Success');
+    const otpTrustedUntil = new Date(Date.now() + OTP_TRUST_HOURS * 60 * 60 * 1000);
+    const otpTrustToken = signToken({
+        id: user.id,
+        type: 'otp_trust'
+    }, `${OTP_TRUST_HOURS}h`);
+    return {
+        ...session,
+        otpTrustToken,
+        otpTrustedUntil: otpTrustedUntil.toISOString()
     };
 };
 export const getMyClinics = async (userId) => {

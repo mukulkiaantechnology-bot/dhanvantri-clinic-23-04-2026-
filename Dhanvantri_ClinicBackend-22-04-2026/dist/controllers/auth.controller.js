@@ -14,7 +14,7 @@ export const login = asyncHandler(async (req, res) => {
         console.log('Login backend result successful');
         res.status(200).json({
             success: true,
-            message: 'Verification code sent to email',
+            message: result?.otpRequired ? 'Verification code sent to email' : 'Login successful',
             data: result
         });
     }
