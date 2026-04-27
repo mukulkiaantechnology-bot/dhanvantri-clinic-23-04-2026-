@@ -191,19 +191,20 @@ export const login = async (data, ip, device) => {
         where: { id: user.id },
         data: { otp: generatedOtp, otpExpiry }
     });
-    try {
-        await sendOTP(user.email, generatedOtp);
-    }
-    catch (e) {
+    // Do not block login response on SMTP/network latency.
+    // OTP mail is dispatched in background so OTP screen can open immediately.
+    void Promise.resolve()
+        .then(() => sendOTP(user.email, generatedOtp))
+        .catch(() => {
         // Keep login flow resilient even if SMTP is not configured.
-    }
+    });
     // Attempt to fix potential invalid enum values for Super Admin or others
-    try {
-        await prisma.$executeRawUnsafe(`UPDATE clinicstaff SET role = 'RECEPTIONIST' WHERE role = '' OR role IS NULL`);
-    }
-    catch (e) {
+    // Avoid blocking login path with data-healing query.
+    void Promise.resolve()
+        .then(() => prisma.$executeRawUnsafe(`UPDATE clinicstaff SET role = 'RECEPTIONIST' WHERE role = '' OR role IS NULL`))
+        .catch(() => {
         // Ignore raw query errors (e.g. if syntax differs)
-    }
+    });
     let staffRecords = [];
     try {
         staffRecords = await prisma.clinicstaff.findMany({

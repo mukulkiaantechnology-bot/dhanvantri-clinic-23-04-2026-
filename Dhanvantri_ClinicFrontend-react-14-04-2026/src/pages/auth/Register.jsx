@@ -26,7 +26,7 @@ const Register = () => {
         const fetchPlans = async () => {
             try {
                 const res = await api.get('/public/plans');
-                if (res.status === 'success') {
+                if (res?.success) {
                     setPlans(res.data);
                 }
             }
@@ -45,7 +45,7 @@ const Register = () => {
         setIsLoading(true);
         try {
             const res = await api.post('/public/register', formData);
-            if (res.status === 'success') {
+            if (res?.success) {
                 if (formData.userType === 'PATIENT') {
                     // Auto-login for patients
                     const loginResult = await login(formData.email, formData.password);

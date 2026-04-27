@@ -29,7 +29,7 @@ const Plans = () => {
             const res = await api.get('/super/plans', {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            if (res.status === 'success') {
+            if (res?.success) {
                 setPlans(res.data);
             }
         }

@@ -13,7 +13,7 @@ const UserManagement = () => {
             const res = await api.get('/super/registrations', {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            if (res.status === 'success') {
+            if (res?.success) {
                 setRegistrations(res.data);
             }
         }

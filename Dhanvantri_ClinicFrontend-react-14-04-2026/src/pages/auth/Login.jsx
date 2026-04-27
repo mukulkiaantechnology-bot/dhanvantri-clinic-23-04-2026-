@@ -220,7 +220,7 @@ const Login = () => {
                                 <span style={{ cursor: 'pointer', background: '#f1f5f9', padding: '4px 8px', borderRadius: '4px' }} onClick={() => autofillCredentials('radio@gmail.com')}>radiology</span>
                                 <span style={{ cursor: 'pointer', background: '#f1f5f9', padding: '4px 8px', borderRadius: '4px' }} onClick={() => autofillCredentials('accountant@gmail.com')}>accountant</span>
                                 <span style={{ cursor: 'pointer', background: '#f1f5f9', padding: '4px 8px', borderRadius: '4px' }} onClick={() => autofillCredentials('docs@gmail.com')}>document controller</span>
-                                <span style={{ cursor: 'pointer', background: '#f1f5f9', padding: '4px 8px', borderRadius: '4px' }} onClick={() => autofillCredentials('aisha@example.com')}>patient</span>
+                                <span style={{ cursor: 'pointer', background: '#f1f5f9', padding: '4px 8px', borderRadius: '4px' }} onClick={() => autofillCredentials('patient@gmail.com')}>patient</span>
                             </div>
                         </form>) : step === 'otp' ? (<form className="login-form" onSubmit={handleVerifyOTP}>
                             <div className="otp-explanation mb-sm">
